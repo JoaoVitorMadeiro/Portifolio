@@ -3,14 +3,16 @@
 
 import { z } from "zod";
 
+// Zod messages remain in one language (e.g., PT) or become keys if needed.
+// For this example, keeping them simple.
 const contactFormSchema = z.object({
-  name: z.string().min(2, "O nome deve ter pelo menos 2 caracteres."),
-  email: z.string().email("Endereço de email inválido."),
-  message: z.string().min(10, "A mensagem deve ter pelo menos 10 caracteres."),
+  name: z.string().min(2, "O nome deve ter pelo menos 2 caracteres."), // Key: "validation.name.minChar"
+  email: z.string().email("Endereço de email inválido."), // Key: "validation.email.invalid"
+  message: z.string().min(10, "A mensagem deve ter pelo menos 10 caracteres."), // Key: "validation.message.minChar"
 });
 
 export type ContactFormState = {
-  message: string;
+  messageKey: string; // Now a key for client-side translation
   status: "success" | "error" | "idle";
   errors?: {
     name?: string[];
@@ -31,7 +33,7 @@ export async function submitContactForm(
 
   if (!validatedFields.success) {
     return {
-      message: "Falha na validação. Por favor, verifique os dados inseridos.",
+      messageKey: "validation.failed",
       status: "error",
       errors: validatedFields.error.flatten().fieldErrors,
     };
@@ -39,17 +41,24 @@ export async function submitContactForm(
 
   const { name, email, message } = validatedFields.data;
 
-  // Em um aplicativo real, você enviaria um e-mail ou salvaria em um banco de dados aqui.
-  console.log("Formulário de contato enviado:");
-  console.log("Nome:", name);
+  // In a real app, you would send an email or save to a database here.
+  console.log("Contact form submitted:");
+  console.log("Name:", name);
   console.log("Email:", email);
-  console.log("Mensagem:", message);
+  console.log("Message:", message);
 
-  // Simular chamada de API
+  // Simulate API call
   await new Promise(resolve => setTimeout(resolve, 1000));
 
+  // Example of successful submission:
   return {
-    message: "Obrigado pela sua mensagem! Entrarei em contato em breve.",
+    messageKey: "contact.success",
     status: "success",
   };
+
+  // Example of a server-side error during submission (uncomment to test):
+  // return {
+  //   messageKey: "contact.error.generic",
+  //   status: "error",
+  // };
 }

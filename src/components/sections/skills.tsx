@@ -1,18 +1,23 @@
+
+"use client";
 import type { ExtractProfileInfoOutput } from '@/ai/flows/extract-profile-info';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface SkillsSectionProps {
   skills: ExtractProfileInfoOutput['skills'];
 }
 
 export function SkillsSection({ skills }: SkillsSectionProps) {
+  const { translations } = useLanguage();
+
   if (!skills || skills.length === 0) {
     return (
       <section id="skills" className="py-16 md:py-24 bg-background">
         <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-headline mb-12 text-center text-4xl font-bold text-foreground sm:text-5xl">Habilidades Técnicas</h2>
-           <p className="text-center text-muted-foreground">Nenhuma habilidade para exibir no momento. Volte em breve!</p>
+          <h2 className="font-headline mb-12 text-center text-4xl font-bold text-foreground sm:text-5xl">{translations.skillsTitle}</h2>
+           <p className="text-center text-muted-foreground">{translations.skillsNone}</p>
         </div>
       </section>
     );
@@ -21,10 +26,10 @@ export function SkillsSection({ skills }: SkillsSectionProps) {
   return (
     <section id="skills" className="py-16 md:py-24 bg-background">
       <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <h2 className="font-headline mb-12 text-center text-4xl font-bold text-foreground sm:text-5xl">Habilidades Técnicas</h2>
+        <h2 className="font-headline mb-12 text-center text-4xl font-bold text-foreground sm:text-5xl">{translations.skillsTitle}</h2>
         <Card className="shadow-lg">
           <CardHeader>
-            <CardTitle className="font-headline text-center text-2xl text-primary">Minhas Competências</CardTitle>
+            <CardTitle className="font-headline text-center text-2xl text-primary">{translations.skillsCompetencies}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap justify-center gap-3 sm:gap-4">

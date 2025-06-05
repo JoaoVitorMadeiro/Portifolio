@@ -14,14 +14,17 @@ import { submitContactForm, type ContactFormState } from "@/app/actions";
 import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Send } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const contactFormSchema = z.object({
-  name: z.string().min(2, { message: "O nome deve ter pelo menos 2 caracteres." }),
-  email: z.string().email({ message: "Por favor, insira um endereço de email válido." }),
-  message: z.string().min(10, { message: "A mensagem deve ter pelo menos 10 caracteres." }),
+// Zod schema for client-side validation (can be different or use keys if fully internationalized)
+const contactFormSchemaClient = (translations: any) => z.object({
+  name: z.string().min(2, { message: translations.language === "pt-BR" ? "O nome deve ter pelo menos 2 caracteres." : "Name must be at least 2 characters." }),
+  email: z.string().email({ message: translations.language === "pt-BR" ? "Por favor, insira um endereço de email válido." : "Please enter a valid email address." }),
+  message: z.string().min(10, { message: translations.language === "pt-BR" ? "A mensagem deve ter pelo menos 10 caracteres." : "Message must be at least 10 characters." }),
 });
 
-type ContactFormData = z.infer<typeof contactFormSchema>;
+
+type ContactFormData = z.infer<ReturnType<typeof contactFormSchemaClient>>;
 
 interface ContactSectionProps {
   contactEmail?: string;
@@ -29,16 +32,17 @@ interface ContactSectionProps {
 
 function SubmitButton() {
   const { pending } = useFormStatus();
+  const { translations } = useLanguage();
   return (
     <Button type="submit" disabled={pending} className="w-full sm:w-auto transition-transform hover:scale-105 group">
       {pending ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Enviando...
+          {translations.contactSubmittingButton}
         </>
       ) : (
         <>
-          Enviar Mensagem <Send className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+          {translations.contactSubmitButton} <Send className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
         </>
       )}
     </Button>
@@ -47,34 +51,45 @@ function SubmitButton() {
 
 export function ContactSection({ contactEmail }: ContactSectionProps) {
   const { toast } = useToast();
+  const { translations, language } = useLanguage();
+
 
   const form = useForm<ContactFormData>({
-    resolver: zodResolver(contactFormSchema),
+    resolver: zodResolver(contactFormSchemaClient(translations)), // Pass translations for dynamic messages
     defaultValues: {
       name: "",
       email: contactEmail || "",
       message: "",
     },
   });
+  
+  useEffect(() => {
+    form.reset({ 
+        name: "", 
+        email: contactEmail || "", 
+        message: "" 
+    });
+  }, [language, contactEmail, form]);
 
-  const initialState: ContactFormState = { message: "", status: "idle" };
+
+  const initialState: ContactFormState = { messageKey: "", status: "idle" };
   const [state, formAction] = useFormState(submitContactForm, initialState);
 
   useEffect(() => {
     if (state.status === "success") {
       toast({
-        title: "Mensagem Enviada!",
-        description: state.message,
+        title: translations.contactToastSuccessTitle,
+        description: translations.formMessages[state.messageKey] || state.messageKey,
       });
       form.reset();
-    } else if (state.status === "error" && state.message && (!state.errors || Object.keys(state.errors).length === 0)) {
+    } else if (state.status === "error" && state.messageKey) {
        toast({
-        title: "Erro",
-        description: state.message,
+        title: translations.contactToastErrorTitle,
+        description: translations.formMessages[state.messageKey] || state.messageKey,
         variant: "destructive",
       });
     }
-  }, [state, toast, form]);
+  }, [state, toast, form, translations]);
 
 
   return (
@@ -82,20 +97,20 @@ export function ContactSection({ contactEmail }: ContactSectionProps) {
       <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <Card className="shadow-xl">
           <CardHeader className="text-center">
-            <CardTitle className="font-headline text-4xl font-bold text-foreground sm:text-5xl">Entre em Contato</CardTitle>
+            <CardTitle className="font-headline text-4xl font-bold text-foreground sm:text-5xl">{translations.contactTitle}</CardTitle>
             <CardDescription className="mt-2 text-lg text-muted-foreground">
-              Tem alguma pergunta ou quer colaborar? Envie-me uma mensagem!
+              {translations.contactDescription}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form action={formAction} className="space-y-6">
               <div>
-                <Label htmlFor="name" className="text-foreground/80">Nome Completo</Label>
+                <Label htmlFor="name" className="text-foreground/80">{translations.contactNameLabel}</Label>
                 <Input
                   id="name"
                   type="text"
                   {...form.register("name")}
-                  placeholder="Seu Nome"
+                  placeholder={translations.contactNamePlaceholder}
                   className="mt-1 bg-background/70"
                   aria-invalid={form.formState.errors.name || state.errors?.name ? "true" : "false"}
                 />
@@ -106,12 +121,12 @@ export function ContactSection({ contactEmail }: ContactSectionProps) {
               </div>
 
               <div>
-                <Label htmlFor="email" className="text-foreground/80">Endereço de Email</Label>
+                <Label htmlFor="email" className="text-foreground/80">{translations.contactEmailLabel}</Label>
                 <Input
                   id="email"
                   type="email"
                   {...form.register("email")}
-                  placeholder="seu.email@exemplo.com"
+                  placeholder={translations.contactEmailPlaceholder}
                   className="mt-1 bg-background/70"
                   aria-invalid={form.formState.errors.email || state.errors?.email ? "true" : "false"}
                 />
@@ -122,11 +137,11 @@ export function ContactSection({ contactEmail }: ContactSectionProps) {
               </div>
 
               <div>
-                <Label htmlFor="message" className="text-foreground/80">Sua Mensagem</Label>
+                <Label htmlFor="message" className="text-foreground/80">{translations.contactMessageLabel}</Label>
                 <Textarea
                   id="message"
                   {...form.register("message")}
-                  placeholder="Olá João, gostaria de discutir..."
+                  placeholder={translations.contactMessagePlaceholder}
                   rows={5}
                   className="mt-1 bg-background/70"
                   aria-invalid={form.formState.errors.message || state.errors?.message ? "true" : "false"}

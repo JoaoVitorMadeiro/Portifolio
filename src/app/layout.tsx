@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: 'Profile Canvas - João Vitor Madeiro',
-  description: 'Personal portfolio of João Vitor Madeiro, showcasing skills and projects.',
+  title: 'Portfólio Profissional - João Vitor Madeiro',
+  description: 'Portfólio pessoal de João Vitor Madeiro, apresentando habilidades e projetos.',
 };
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

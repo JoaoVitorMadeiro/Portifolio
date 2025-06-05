@@ -8,33 +8,37 @@ import { ContactSection } from '@/components/sections/contact';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from "lucide-react";
 
-// Mock data for fallback or development
+// Dados de exemplo atualizados e traduzidos
 const MOCK_PROFILE_DATA: ExtractProfileInfoOutput = {
   name: "João Vitor Madeiro",
-  title: "Software Engineer | Full Stack Developer",
-  bio: "Passionate developer with experience in creating dynamic and responsive web applications. Always eager to learn new technologies and solve challenging problems. This is mock data used when AI fetching fails.",
-  skills: ["React", "Node.js", "TypeScript", "JavaScript", "HTML", "CSS", "Python", "Django", "SQL", "Git", "Next.js", "TailwindCSS"],
+  title: "Desenvolvedor Back-End",
+  bio: "Desenvolvedor Back-End focado em criar soluções de software escaláveis e robustas. Experiência com Java, Spring Boot, Python, Docker, Kafka e arquitetura de microsserviços. Buscando constantemente novos desafios e evolução técnica.",
+  skills: [
+    "Java", "Python", "C", "Spring Boot", "JUnit", "Mockito", "Docker", "Kafka", 
+    "Git", "Jenkins", "PostgreSQL", "MariaDB", "APIs RESTful", "MongoDB", 
+    "Clean Architecture", "Spring Security", "Spring Data JPA", "JWT", "SOLID Principles", "Agile (Scrum)"
+  ],
   projects: [
     {
-      name: "Mock Project Alpha",
-      description: "An innovative solution for modern web challenges, showcasing advanced frontend and backend integration. Built with a focus on performance and user experience.",
-      technologies: ["Next.js", "React", "Tailwind CSS", "TypeScript", "GraphQL"],
+      name: "Loja Online E-commerce",
+      description: "Desenvolvimento de um sistema de e-commerce utilizando arquitetura de microsserviços, com foco em robustez e escalabilidade. Inclui autenticação com JWT e integração com Spring Security.",
+      technologies: ["Java", "Spring Boot", "Microsserviços", "Docker", "JWT", "Spring Security"],
       link: "#"
     },
     {
-      name: "Mock Project Beta",
-      description: "A data visualization tool that transforms complex datasets into insightful dashboards. Features real-time updates and interactive charts.",
-      technologies: ["React", "D3.js", "Node.js", "Express", "MongoDB"],
+      name: "Class-API",
+      description: "API RESTful para gerenciamento de turmas e alunos, seguindo os princípios SOLID e Clean Architecture. Foco na organização e manutenibilidade do código.",
+      technologies: ["Java", "Spring Boot", "REST", "SOLID", "Clean Architecture", "PostgreSQL"],
       link: "#"
     },
     {
-        name: "Mock Project Gamma",
-        description: "A collaborative platform designed for remote teams, enhancing productivity through seamless communication and task management features.",
-        technologies: ["Vue.js", "Firebase", "WebSockets"],
-        link: "#"
+      name: "Ranking Challenge",
+      description: "Aplicação de leaderboards (placar de líderes) com microsserviços, utilizando Kafka para mensageria e JWT para autenticação. Projetado para alta concorrência e atualizações em tempo real.",
+      technologies: ["Java", "Spring Boot", "Kafka", "JWT", "Microsserviços"],
+      link: "#"
     }
   ],
-  contactEmail: "joao.madeiro@example.com"
+  contactEmail: "joao.madeirodev@gmail.com"
 };
 
 
@@ -43,31 +47,27 @@ export default async function PortfolioPage() {
   let errorFetchingData: string | null = null;
 
   try {
-    profileData = await extractProfileInfo({
-      linkedInUrl: "https://www.linkedin.com/in/joaovitormadeiro/",
-      githubUrl: "https://github.com/JoaoVitorMadeiro",
-    });
+    // Tenta buscar os dados reais, mas usaremos MOCK_PROFILE_DATA como fallback prioritário por enquanto
+    // profileData = await extractProfileInfo({
+    //   linkedInUrl: "https://www.linkedin.com/in/joaovitormadeiro/",
+    //   githubUrl: "https://github.com/JoaoVitorMadeiro",
+    // });
+    // Forçando o uso de mock data para refletir as mudanças solicitadas imediatamente.
+    // Em um cenário real, você decidiria se a IA deve ser a fonte primária ou se o mock é para desenvolvimento/fallback.
+    if (true) { // Alterado para true para forçar o uso de mock data
+        throw new Error("Forçando fallback para mock data para exibir informações atualizadas.");
+    }
   } catch (error) {
-    console.error("Failed to fetch profile data from AI:", error);
-    errorFetchingData = "Could not load profile information from AI. Displaying mock data instead.";
-    profileData = MOCK_PROFILE_DATA; // Use mock data as fallback
+    console.error("Falha ao buscar dados do perfil da IA:", error);
+    errorFetchingData = "Não foi possível carregar as informações do perfil via IA. Exibindo dados de exemplo.";
+    profileData = MOCK_PROFILE_DATA; // Usa dados de exemplo como fallback
   }
 
   if (!profileData) {
-    // This case should ideally not be hit if mock data is used on error,
-    // but it's a safeguard.
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
-        <Alert variant="destructive" className="max-w-lg">
-          <Terminal className="h-4 w-4" />
-          <AlertTitle>Error Loading Portfolio</AlertTitle>
-          <AlertDescription>
-            We encountered an issue loading the portfolio data. Please try refreshing the page or contact support if the problem persists.
-            {errorFetchingData && <p className="mt-2">{errorFetchingData}</p>}
-          </AlertDescription>
-        </Alert>
-      </div>
-    );
+    profileData = MOCK_PROFILE_DATA; // Garantia adicional de que mock_profile_data é usado se tudo falhar.
+    if (!errorFetchingData) {
+        errorFetchingData = "Não foi possível carregar as informações do perfil. Exibindo dados de exemplo."
+    }
   }
   
   return (
@@ -78,7 +78,7 @@ export default async function PortfolioPage() {
            <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-4">
             <Alert variant="destructive">
               <Terminal className="h-4 w-4" />
-              <AlertTitle>AI Data Fetching Issue</AlertTitle>
+              <AlertTitle>Problema ao Buscar Dados da IA</AlertTitle>
               <AlertDescription>{errorFetchingData}</AlertDescription>
             </Alert>
           </div>

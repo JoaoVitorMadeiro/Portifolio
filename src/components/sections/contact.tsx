@@ -16,9 +16,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, Send } from "lucide-react";
 
 const contactFormSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  email: z.string().email({ message: "Please enter a valid email address." }),
-  message: z.string().min(10, { message: "Message must be at least 10 characters." }),
+  name: z.string().min(2, { message: "O nome deve ter pelo menos 2 caracteres." }),
+  email: z.string().email({ message: "Por favor, insira um endereço de email válido." }),
+  message: z.string().min(10, { message: "A mensagem deve ter pelo menos 10 caracteres." }),
 });
 
 type ContactFormData = z.infer<typeof contactFormSchema>;
@@ -34,11 +34,11 @@ function SubmitButton() {
       {pending ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Sending...
+          Enviando...
         </>
       ) : (
         <>
-          Send Message <Send className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+          Enviar Mensagem <Send className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
         </>
       )}
     </Button>
@@ -63,13 +63,13 @@ export function ContactSection({ contactEmail }: ContactSectionProps) {
   useEffect(() => {
     if (state.status === "success") {
       toast({
-        title: "Message Sent!",
+        title: "Mensagem Enviada!",
         description: state.message,
       });
       form.reset();
     } else if (state.status === "error" && state.message && (!state.errors || Object.keys(state.errors).length === 0)) {
        toast({
-        title: "Error",
+        title: "Erro",
         description: state.message,
         variant: "destructive",
       });
@@ -82,20 +82,20 @@ export function ContactSection({ contactEmail }: ContactSectionProps) {
       <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <Card className="shadow-xl">
           <CardHeader className="text-center">
-            <CardTitle className="font-headline text-4xl font-bold text-foreground sm:text-5xl">Get In Touch</CardTitle>
+            <CardTitle className="font-headline text-4xl font-bold text-foreground sm:text-5xl">Entre em Contato</CardTitle>
             <CardDescription className="mt-2 text-lg text-muted-foreground">
-              Have a question or want to work together? Send me a message!
+              Tem alguma pergunta ou quer colaborar? Envie-me uma mensagem!
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form action={formAction} className="space-y-6">
               <div>
-                <Label htmlFor="name" className="text-foreground/80">Full Name</Label>
+                <Label htmlFor="name" className="text-foreground/80">Nome Completo</Label>
                 <Input
                   id="name"
                   type="text"
                   {...form.register("name")}
-                  placeholder="Your Name"
+                  placeholder="Seu Nome"
                   className="mt-1 bg-background/70"
                   aria-invalid={form.formState.errors.name || state.errors?.name ? "true" : "false"}
                 />
@@ -106,12 +106,12 @@ export function ContactSection({ contactEmail }: ContactSectionProps) {
               </div>
 
               <div>
-                <Label htmlFor="email" className="text-foreground/80">Email Address</Label>
+                <Label htmlFor="email" className="text-foreground/80">Endereço de Email</Label>
                 <Input
                   id="email"
                   type="email"
                   {...form.register("email")}
-                  placeholder="your.email@example.com"
+                  placeholder="seu.email@exemplo.com"
                   className="mt-1 bg-background/70"
                   aria-invalid={form.formState.errors.email || state.errors?.email ? "true" : "false"}
                 />
@@ -122,11 +122,11 @@ export function ContactSection({ contactEmail }: ContactSectionProps) {
               </div>
 
               <div>
-                <Label htmlFor="message" className="text-foreground/80">Your Message</Label>
+                <Label htmlFor="message" className="text-foreground/80">Sua Mensagem</Label>
                 <Textarea
                   id="message"
                   {...form.register("message")}
-                  placeholder="Hi João, I'd like to discuss..."
+                  placeholder="Olá João, gostaria de discutir..."
                   rows={5}
                   className="mt-1 bg-background/70"
                   aria-invalid={form.formState.errors.message || state.errors?.message ? "true" : "false"}

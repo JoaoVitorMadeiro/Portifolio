@@ -11,8 +11,8 @@ export function SkillsSection({ skills }: SkillsSectionProps) {
     return (
       <section id="skills" className="py-16 md:py-24 bg-background">
         <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-headline mb-12 text-center text-4xl font-bold text-foreground sm:text-5xl">Technical Skills</h2>
-           <p className="text-center text-muted-foreground">No skills to display at the moment. Check back soon!</p>
+          <h2 className="font-headline mb-12 text-center text-4xl font-bold text-foreground sm:text-5xl">Habilidades Técnicas</h2>
+           <p className="text-center text-muted-foreground">Nenhuma habilidade para exibir no momento. Volte em breve!</p>
         </div>
       </section>
     );
@@ -21,10 +21,10 @@ export function SkillsSection({ skills }: SkillsSectionProps) {
   return (
     <section id="skills" className="py-16 md:py-24 bg-background">
       <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <h2 className="font-headline mb-12 text-center text-4xl font-bold text-foreground sm:text-5xl">Technical Skills</h2>
+        <h2 className="font-headline mb-12 text-center text-4xl font-bold text-foreground sm:text-5xl">Habilidades Técnicas</h2>
         <Card className="shadow-lg">
           <CardHeader>
-            <CardTitle className="font-headline text-center text-2xl text-primary">My Expertise</CardTitle>
+            <CardTitle className="font-headline text-center text-2xl text-primary">Minhas Competências</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap justify-center gap-3 sm:gap-4">

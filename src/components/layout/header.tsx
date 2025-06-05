@@ -5,13 +5,13 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Briefcase, Award, Mail, HomeIcon } from 'lucide-react'; // Added HomeIcon
+import { Menu, Briefcase, Award, Mail, HomeIcon } from 'lucide-react';
 
 const navItems = [
-  { href: '#home', label: 'Home', icon: <HomeIcon className="w-4 h-4" /> },
-  { href: '#projects', label: 'Projects', icon: <Briefcase className="w-4 h-4" /> },
-  { href: '#skills', label: 'Skills', icon: <Award className="w-4 h-4" /> },
-  { href: '#contact', label: 'Contact', icon: <Mail className="w-4 h-4" /> },
+  { href: '#home', label: 'Início', icon: <HomeIcon className="w-4 h-4" /> },
+  { href: '#projects', label: 'Projetos', icon: <Briefcase className="w-4 h-4" /> },
+  { href: '#skills', label: 'Habilidades', icon: <Award className="w-4 h-4" /> },
+  { href: '#contact', label: 'Contato', icon: <Mail className="w-4 h-4" /> },
 ];
 
 export function Header() {
@@ -58,7 +58,7 @@ export function Header() {
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="h-6 w-6" />
-                <span className="sr-only">Open menu</span>
+                <span className="sr-only">Abrir menu</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[250px] sm:w-[300px] pt-10">

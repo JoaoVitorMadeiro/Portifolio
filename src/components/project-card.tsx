@@ -15,7 +15,7 @@ interface ProjectCardProps {
 export function ProjectCard({ project }: ProjectCardProps) {
   const placeholderImage = `https://placehold.co/400x250.png`;
   // Create a hint from the project name, max 2 words
-  const aiHint = project.name.split(' ').slice(0, 2).join(' ').toLowerCase() || "code abstract";
+  const aiHint = project.name.split(' ').slice(0, 2).join(' ').toLowerCase() || "codigo abstrato";
 
 
   return (
@@ -24,7 +24,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         <div className="aspect-[16/10] w-full overflow-hidden rounded-t-lg">
            <Image
             src={placeholderImage}
-            alt={`Placeholder for ${project.name}`}
+            alt={`Placeholder para ${project.name}`}
             width={400}
             height={250}
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
@@ -32,11 +32,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
           />
         </div>
         <CardTitle className="font-headline mt-4 text-2xl">{project.name}</CardTitle>
-        <CardDescription className="h-16 overflow-y-auto text-sm">{project.description}</CardDescription>
+        <CardDescription className="h-20 overflow-y-auto text-sm">{project.description}</CardDescription> {/* Increased height for description */}
       </CardHeader>
       <CardContent className="flex-grow">
         <div className="mb-4">
-          <h4 className="mb-2 text-sm font-semibold text-muted-foreground">Technologies:</h4>
+          <h4 className="mb-2 text-sm font-semibold text-muted-foreground">Tecnologias:</h4>
           <div className="flex flex-wrap gap-2">
             {project.technologies.map((tech) => (
               <Badge key={tech} variant="secondary" className="transition-colors hover:bg-primary/20">
@@ -47,11 +47,15 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </div>
       </CardContent>
       <CardFooter>
-        {project.link && (
+        {project.link && project.link !== "#" ? ( // Added check for non-placeholder link
           <Button asChild variant="outline" className="w-full transition-colors hover:bg-accent hover:text-accent-foreground">
             <Link href={project.link} target="_blank" rel="noopener noreferrer">
-              View Project <ExternalLink className="ml-2 h-4 w-4" />
+              Ver Projeto <ExternalLink className="ml-2 h-4 w-4" />
             </Link>
+          </Button>
+        ) : (
+          <Button variant="outline" className="w-full" disabled>
+            Link Indisponível
           </Button>
         )}
       </CardFooter>

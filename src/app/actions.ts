@@ -4,9 +4,9 @@
 import { z } from "zod";
 
 const contactFormSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters long."),
-  email: z.string().email("Invalid email address."),
-  message: z.string().min(10, "Message must be at least 10 characters long."),
+  name: z.string().min(2, "O nome deve ter pelo menos 2 caracteres."),
+  email: z.string().email("Endereço de email inválido."),
+  message: z.string().min(10, "A mensagem deve ter pelo menos 10 caracteres."),
 });
 
 export type ContactFormState = {
@@ -31,7 +31,7 @@ export async function submitContactForm(
 
   if (!validatedFields.success) {
     return {
-      message: "Validation failed. Please check your input.",
+      message: "Falha na validação. Por favor, verifique os dados inseridos.",
       status: "error",
       errors: validatedFields.error.flatten().fieldErrors,
     };
@@ -39,17 +39,17 @@ export async function submitContactForm(
 
   const { name, email, message } = validatedFields.data;
 
-  // In a real app, you would send an email or save to a database here.
-  console.log("Contact form submitted:");
-  console.log("Name:", name);
+  // Em um aplicativo real, você enviaria um e-mail ou salvaria em um banco de dados aqui.
+  console.log("Formulário de contato enviado:");
+  console.log("Nome:", name);
   console.log("Email:", email);
-  console.log("Message:", message);
+  console.log("Mensagem:", message);
 
-  // Simulate API call
+  // Simular chamada de API
   await new Promise(resolve => setTimeout(resolve, 1000));
 
   return {
-    message: "Thank you for your message! I'll get back to you soon.",
+    message: "Obrigado pela sua mensagem! Entrarei em contato em breve.",
     status: "success",
   };
 }
